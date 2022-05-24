@@ -5,8 +5,7 @@
         resultatDeAPI.forEach(canap)
             -->afficher les canap
             --> pour chaque element de la list l'afficher sur la page
- )
- */
+ )*/
 
 //1. appler l'API
     fetch("http://localhost:3000/api/products")
@@ -41,20 +40,3 @@
 
     });
     });
-
-
-/*
-} {
-    if (res.ok) {
-    return res.json();
-    }
-})
-.then(function(value) {
-    document
-        .getElementById("hello-result")
-        .innerText = value.queryString.greetings;
-})
-.catch(function(err) {
-    // Une erreur est survenue
-});
-*/
