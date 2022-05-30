@@ -21,7 +21,6 @@ if (res.ok) {
 products.forEach(product => { //boucle pour chaques produits trouvés
     //afficher le detail du produit dans le DOM
         //1 creer l'element HTML
-        //2 afficher l'élement HTML au bon endroit dans le DOM
             //creer un element dynamique
             let canapHtmlElement = `
                 <a href="./product.html?id=${product._id}">
@@ -31,10 +30,11 @@ products.forEach(product => { //boucle pour chaques produits trouvés
                         <p class="productDescription">${product.description}</p>
                     </article>
                 </a>`
-
-            const parser = new DOMParser();
-            const data = parser.parseFromString(canapHtmlElement, "text/html")
-                    console.log(data)
+        //2 afficher l'élement HTML au bon endroit dans le DOM
+            const items = document.getElementById("items");
+                const parser = new DOMParser();
+                const data = parser.parseFromString(canapHtmlElement, "text/html");
+                items.appendChild(data.body.firstChild);
 
 });
 });
