@@ -74,15 +74,17 @@ fetch(`http://localhost:3000/api/products/${getProductId()}`)
 //récuperer les valeurs du formulaire
 // stocker les valeurs du formulaire dans le storage
 //déclarer un variable "produitSaveInLocalStorage"
-    let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("unProduit"));
+    let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
     console.log(produitSaveInLocalStorage);
     
     if(produitSaveInLocalStorage){
-
+        produitSaveInLocalStorage.push(optionsProduit);
+        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+        console.log(produitSaveInLocalStorage)
     } else{
         produitSaveInLocalStorage = [];
         produitSaveInLocalStorage.push(optionsProduit);
-
+        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
         console.log(produitSaveInLocalStorage)
     }
     })
