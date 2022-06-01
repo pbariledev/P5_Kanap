@@ -61,9 +61,9 @@ fetch(`http://localhost:3000/api/products/${getProductId()}`)
     
 
     let optionsProduit = {
-        idProduit : getProductId (),
-        quantityProduit : getQuantityValue (),
-        colorProduit : getColorValue (),
+        id : getProductId (),
+        quantity : getQuantityValue (),
+        color : getColorValue (),
     }
         console.log(optionsProduit);
     
@@ -78,9 +78,15 @@ fetch(`http://localhost:3000/api/products/${getProductId()}`)
     console.log(produitSaveInLocalStorage);
     
     if(produitSaveInLocalStorage){
-        produitSaveInLocalStorage.push(optionsProduit);
+        const pasDoublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
+        if (pasDoublon){
+            pasDoublon.quantity = pasDoublon.quantity += optionsProduit.quantity;
         localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-        console.log(produitSaveInLocalStorage)
+        return;
+       }
+       produitSaveInLocalStorage.push(optionsProduit);
+       localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+
     } else{
         produitSaveInLocalStorage = [];
         produitSaveInLocalStorage.push(optionsProduit);
