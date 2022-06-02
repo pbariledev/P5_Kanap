@@ -4,6 +4,7 @@ function getProductId() {
     return new URL(location.href).searchParams.get("id")   
 }
 
+//fonction de récupération des données liées à Id produit
 function displayDetailProduct(produit) {
     const img = document.createElement("img");
         img.src =produit.imageUrl;
@@ -16,8 +17,9 @@ function displayDetailProduct(produit) {
             colorChoice.value = color
             colorChoice.innerHTML = color
             colors.appendChild(colorChoice)
-          });
+        });
 }
+//fonction au clic sur Ajouter panier
 function handleaddtocart(){
     const addButton = document.querySelector("#addToCart");
 
@@ -28,13 +30,38 @@ function handleaddtocart(){
         const nocolor = color.value =="";
         const noquantity = quantity.value == 0;
         const errorquantity = quantity.value <0 && quantity.value > 100;
-
+        //si pas de color ou quantité nul ou mauvaise alert sinon localstorage
         if (nocolor || noquantity || errorquantity){
             alert("veuillez saisir une couleur et une quantité entre 1 et 100 pour ajouter au panier");
         } else {
-            //sauvegardeDanspanier();
-            alert("Votre produit a bien été rajouté au panier")
-        }
+        //-----------localStorage-----------
+        //récuperer les valeurs des formulaires
+            let optionsProduit = {
+                id : getProductId (),
+                quantity : quantity.value,
+                color : color.value,
+            }
+
+            //déclarer un variable "produitSaveInLocalStorage"
+            let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
+
+                if(produitSaveInLocalStorage){
+                    const pasDoublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
+                    if (pasDoublon){
+                        pasDoublon.quantity = parseInt(pasDoublon.quantity) + parseInt(optionsProduit.quantity);
+                    localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+                    return;
+                    }
+                produitSaveInLocalStorage.push(optionsProduit);
+                localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+                } else{
+                    produitSaveInLocalStorage = [];
+                    produitSaveInLocalStorage.push(optionsProduit);
+                    localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+                }  
+                //sauvegardeDanspanier();
+                    alert("Votre produit a bien été rajouté au panier")
+        }    
     })
 }
 
@@ -44,53 +71,8 @@ fetch(`http://localhost:3000/api/products/${getProductId()}`)
     .then (produit => {
         displayDetailProduct(produit);
         handleaddtocart();
-        console.log(produit)
     })
     .catch(function(err) {
         window.location.href = "./index.html"
         // Une erreur est survenue
-      })
-    )
-
-    function getQuantityValue (){
-        var input = document.getElementById("quantity").value;
-    }
-    function getColorValue (){
-        var input = document.getElementById("colors").value;
-    }
-    
-
-    let optionsProduit = {
-        id : getProductId (),
-        quantity : getQuantityValue (),
-        color : getColorValue (),
-    }
-        console.log(optionsProduit);
-    
-        //-----------localStorage-----------
-//au clic
-    const addButton = document.querySelector("#addToCart");
-    addButton.addEventListener("click", () => {
-//récuperer les valeurs du formulaire
-// stocker les valeurs du formulaire dans le storage
-//déclarer un variable "produitSaveInLocalStorage"
-    let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
-    console.log(produitSaveInLocalStorage);
-    
-    if(produitSaveInLocalStorage){
-        const pasDoublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
-        if (pasDoublon){
-            pasDoublon.quantity = pasDoublon.quantity += optionsProduit.quantity;
-        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-        return;
-       }
-       produitSaveInLocalStorage.push(optionsProduit);
-       localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-
-    } else{
-        produitSaveInLocalStorage = [];
-        produitSaveInLocalStorage.push(optionsProduit);
-        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-        console.log(produitSaveInLocalStorage)
-    }
-    })
+    }))
