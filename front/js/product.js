@@ -46,14 +46,14 @@ function handleaddtocart(){
             let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
 
                 if(produitSaveInLocalStorage){
-                    const pasDoublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
-                    if (pasDoublon){
-                        pasDoublon.quantity = parseInt(pasDoublon.quantity) + parseInt(optionsProduit.quantity);
+                    const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
+                    if (doublon){
+                        doublon.quantity = parseInt(doublon.quantity) + parseInt(optionsProduit.quantity);
                     localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-                    return;
+                    }else{
+                        produitSaveInLocalStorage.push(optionsProduit);
+                        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
                     }
-                produitSaveInLocalStorage.push(optionsProduit);
-                localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
                 } else{
                     produitSaveInLocalStorage = [];
                     produitSaveInLocalStorage.push(optionsProduit);
