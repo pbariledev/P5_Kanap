@@ -36,6 +36,7 @@ function handleaddtocart(){
         } else {
         //-----------localStorage-----------
         //récuperer les valeurs des formulaires
+        
             let optionsProduit = {
                 id : getProductId (),
                 quantity : quantity.value,
@@ -48,7 +49,7 @@ function handleaddtocart(){
                 if(produitSaveInLocalStorage){
                     const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
                     if (doublon){
-                        doublon.quantity = parseInt(doublon.quantity) + parseInt(optionsProduit.quantity);
+                        doublon.quantity = parseFloat(doublon.quantity) + parseFloat(optionsProduit.quantity);
                     localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
                     }else{
                         produitSaveInLocalStorage.push(optionsProduit);

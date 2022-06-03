@@ -14,34 +14,24 @@ if(localStorage.length === 0 ){
         console.log (retrievedItemInOrder)
         var parsedItemInOrder = JSON.parse(retrievedItemInOrder);
         parsedItemInOrder.sort(function (a, b) {
-            if (a.name < b.name) {
+            if (a.id < b.id) {
               return -1;
             } else {
               return 1;
             };
            });
-        console.log (parsedItemInOrder)
+        console.log (parsedItemInOrder);
 
         parsedItemInOrder.forEach(product => { //boucle pour chaques produits trouvés
-
-            //fonction de récupération des données liées à Id produit
-            function displayDetailProduct(produit) {
-                    const imgage =produit.imageUrl;
-                    const title = produit.name;
-                    const price = produit.price;
-                    const description = produit.description;
-            }
 
                     fetch(`http://localhost:3000/api/products/${product.id}`)
                 .then (res =>res.json()
                 .then (produit => {
-                    displayDetailProduct(produit);
                 
-
                         //1 creer l'element HTML
                             //creer un element dynamique
                             let itemHtmlElement = `
-                            <article class="cart__item" data-id="${product.id}" data-color="{product.color}">
+                            <article class="cart__item" data-id="${product.id}" data-color="${product.color}">
                             <div class="cart__item__img">
                             <img src=${produit.imageUrl} alt=${produit.description}>
                             </div>
@@ -69,6 +59,8 @@ if(localStorage.length === 0 ){
                                 items.appendChild(data.body.firstChild);
                                 
                             }))
+                            
         });
     }
-
+    
+  
