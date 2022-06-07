@@ -65,11 +65,14 @@ if(localStorage.length === 0 ){
     }
 
 
-//modification et la suppression de produits dans la page Panier
+//modification et la suppression deproduits dans la page Panier
 
 //TOTAL ARTICLE
-let totalQuantityItem = document.getElementsByClassName("itemQuantity")
-console.log(totalQuantityItem)
+let totalQte = 0
+for (let product of parsedItemInOrder) {
+    totalQte += Number(product.quantity);
+} 
+
 //TOTALPANIER
     
 
