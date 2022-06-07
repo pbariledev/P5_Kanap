@@ -49,7 +49,7 @@ function handleaddtocart(){
                 if(produitSaveInLocalStorage){
                     const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
                     if (doublon){
-                        doublon.quantity = parseFloat(doublon.quantity) + parseFloat(optionsProduit.quantity);
+                        doublon.quantity = parseInt(doublon.quantity) + parseInt(optionsProduit.quantity);
                     localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
                     }else{
                         produitSaveInLocalStorage.push(optionsProduit);

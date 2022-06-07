@@ -14,13 +14,6 @@ if(localStorage.length === 0 ){
         console.log (retrievedItemInOrder)
         var parsedItemInOrder = JSON.parse(retrievedItemInOrder);
 
-        parsedItemInOrder.sort(function (a, b) {
-            if (a.id < b.id) {
-              return -1;
-            } else {
-              return 1;
-            };
-           });
         console.log (parsedItemInOrder);
 
 
@@ -58,8 +51,52 @@ if(localStorage.length === 0 ){
                             const items = document.getElementById("cart__items");
                                 const parser = new DOMParser();
                                 const data = parser.parseFromString(itemHtmlElement, "text/html");
-                                items.appendChild(data.body.firstChild);                                
+                                items.appendChild(data.body.firstChild); 
+                                
+                                const itemQuantityInput = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] input`);
+                                console.log(itemQuantityInput)
+                                const itemDeleteLink = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] .deleteItem`);
+                                
+                                itemQuantityInput.addEventListener("change", (event)=>{
+                                    event.preventDefault();
+                                    const newQuantity = event.currentTarget.value;
+                                    let optionsProduit = {
+                                        id : product.id,
+                                        quantity : newQuantity,
+                                        color : product.color,
+                                    }
+                                    let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
+                                        const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
+                                        if (doublon){
+                                            doublon.quantity = newQuantity;
+                                        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+                                        }else{
+                                            produitSaveInLocalStorage.push(optionsProduit);
+                                            localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+                                        }
+                                    })
+
+                                    itemDeleteLink.addEventListener("click", (event)=>{
+                                        event.preventDefault();
+                                        
+
+                                    // suppresion de l'article
+                                    //supprimer l'element dans le dom
+                                    //alert popup conf suppresion
+                                    // attention panier vide
+                                    // voir gestion des qtt sup a 100 ou inf 0 ou = 0 à voir sur clock boutton commander
+                            
+
+                                        
+
+                                
+                                })
+
+
                             }))
+
+
+
                             
         });
     }
