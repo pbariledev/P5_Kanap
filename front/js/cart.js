@@ -13,6 +13,7 @@ if(localStorage.length === 0 ){
         const retrievedItemInOrder = localStorage.getItem ("itemInOrder");
         console.log (retrievedItemInOrder)
         var parsedItemInOrder = JSON.parse(retrievedItemInOrder);
+
         parsedItemInOrder.sort(function (a, b) {
             if (a.id < b.id) {
               return -1;
@@ -21,6 +22,7 @@ if(localStorage.length === 0 ){
             };
            });
         console.log (parsedItemInOrder);
+
 
         parsedItemInOrder.forEach(product => { //boucle pour chaques produits trouvés
 
@@ -56,11 +58,19 @@ if(localStorage.length === 0 ){
                             const items = document.getElementById("cart__items");
                                 const parser = new DOMParser();
                                 const data = parser.parseFromString(itemHtmlElement, "text/html");
-                                items.appendChild(data.body.firstChild);
-                                
+                                items.appendChild(data.body.firstChild);                                
                             }))
                             
         });
     }
+
+
+//modification et la suppression de produits dans la page Panier
+
+//TOTAL ARTICLE
+let totalQuantityItem = document.getElementsByClassName("itemQuantity")
+console.log(totalQuantityItem)
+//TOTALPANIER
     
-  
+
+
