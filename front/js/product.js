@@ -41,6 +41,7 @@ function handleaddtocart(){
                 id : getProductId (),
                 quantity : quantity.value,
                 color : color.value,
+                price: price.textContent ,
             }
 
             //déclarer un variable "produitSaveInLocalStorage"
