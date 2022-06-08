@@ -34,7 +34,7 @@ if(localStorage.length === 0 ){
                             <div class="cart__item__content__description">
                                 <h2>${produit.name}</h2>
                                 <p>${product.color}</p>
-                                <p>${produit.price}€</p>
+                                <p>${produit.price} €</p>
                             </div>
                             <div class="cart__item__content__settings">
                                 <div class="cart__item__content__settings__quantity">
@@ -42,7 +42,7 @@ if(localStorage.length === 0 ){
                                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
                                 </div>
                                 <div class="cart__item__content__settings__delete">
-                                <p class="deleteItem">Supprimer</p>
+                                <button class="deleteItem">Supprimer</button>
                                 </div>
                             </div>
                             </div>
@@ -56,7 +56,7 @@ if(localStorage.length === 0 ){
                                 const itemQuantityInput = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] input`);
                                 console.log(itemQuantityInput)
                                 const itemDeleteLink = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] .deleteItem`);
-                                
+                                const article = 
                                 itemQuantityInput.addEventListener("change", (event)=>{
                                     event.preventDefault();
                                     const newQuantity = event.currentTarget.value;
@@ -76,8 +76,23 @@ if(localStorage.length === 0 ){
                                         }
                                     })
 
-                                    itemDeleteLink.addEventListener("click", (event)=>{
-                                        event.preventDefault();
+                                itemDeleteLink.addEventListener("click", (event)=>{
+                                    event.preventDefault();
+                                    let optionsProduit = {
+                                        id : product.id,
+                                        color : product.color,
+                                    }
+                                    let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
+                                        //Selection de l'element à supprimer
+                                        produitSaveInLocalStorage = produitSaveInLocalStorage.filter( el => el.id !== optionsProduit.id || el.color !== optionsProduit.color );
+                                        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+
+                                        //Alerte produit supprimé et refresh
+                                    alert("Ce produit a bien été supprimé du panier");
+                                    location.reload();
+                                                                        })  
+
+
                                         
 
                                     // suppresion de l'article
@@ -85,14 +100,30 @@ if(localStorage.length === 0 ){
                                     //alert popup conf suppresion
                                     // attention panier vide
                                     // voir gestion des qtt sup a 100 ou inf 0 ou = 0 à voir sur clock boutton commander
-                            
+/*--// Suppression d'un produit
+function deleteProduct() {
+    let btn_supprimer = document.querySelectorAll(".deleteItem");
+    let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
 
-                                        
+    for (let j = 0; j < btn_supprimer.length; j++){
+        btn_supprimer[j].addEventListener("click" , (event) => {
+            event.preventDefault();
 
-                                
-                                })
+            //Selection de l'element à supprimer en fonction de son id ET sa couleur
+            let idDelete = produitSaveInLocalStorage[j].id;
+            let colorDelete = produitSaveInLocalStorage[j].color;
 
+            produitSaveInLocalStorage = produitSaveInLocalStorage.filter( el => el.id !== idDelete || el.color !== colorDelete );
+            
+            localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
 
+            //Alerte produit supprimé et refresh
+            alert("Ce produit a bien été supprimé du panier");
+            location.reload();
+        })
+    }
+}
+deleteProduct(); --*/
                             }))
 
 
