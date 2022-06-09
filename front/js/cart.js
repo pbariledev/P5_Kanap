@@ -1,14 +1,13 @@
-// selection de la class ou je vais injecter le code HTML
-const itemsOrder = document.querySelector ("#cartAndFormContainer")
+const itemsOrder = document.querySelector ("#cartAndFormContainer") // selection de la class ou je vais injecter le code HTML
 
-// si le panier est vide : afficher le panier est vide
-if(localStorage.length === 0 ){
+
+if(localStorage.length === 0 ){ // si le panier est vide : afficher le panier est vide
+
     let cartVide = `
     <h1>Votre panier est vide</h1>
     `;
     itemsOrder.innerHTML = cartVide;
-}   else{
-        //si le panier n'est pas vide: afficher les produits qui sont dans le localStorage
+}   else{//si le panier n'est pas vide: afficher les produits qui sont dans le localStorage
         const retrievedItemInOrder = localStorage.getItem ("itemInOrder");
         console.log (retrievedItemInOrder)
         var parsedItemInOrder = JSON.parse(retrievedItemInOrder);
@@ -48,28 +47,35 @@ if(localStorage.length === 0 ){
                     const parser = new DOMParser();
                     const data = parser.parseFromString(itemHtmlElement, "text/html");
                         items.appendChild(data.body.firstChild); 
+                    
+                    //3 modification des quantités et suppression des elements
                     const itemQuantityInput = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] input`);
                     const itemDeleteLink = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] .deleteItem`);
-                    const article = 
-                        itemQuantityInput.addEventListener("change", (event)=>{
-                            event.preventDefault();
-                            const newQuantity = event.currentTarget.value;
-                            let optionsProduit = {
-                                id : product.id,
-                                quantity : newQuantity,
-                                color : product.color,
-                            }
-                            let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
-                            const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
-                            if (doublon){
-                                doublon.quantity = newQuantity;
+                    //modification des quantités au clic
+                    itemQuantityInput.addEventListener("change", (event)=>{
+                        event.preventDefault();
+                        const newQuantity = event.currentTarget.value;
+                        let optionsProduit = {
+                            id : product.id,
+                            quantity : newQuantity,
+                            color : product.color,
+                        }
+                        if(newQuantity>100){
+                            alert("veuillez saisir une couleur et une quantité entre 1 et 100 pour ajouter au panier");
+                        }else{let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
+                        const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
+                        if (doublon){ 
+                            doublon.quantity = newQuantity;
+                        localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
+                        }else{
+                            produitSaveInLocalStorage.push(optionsProduit);
                             localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-                            }else{
-                                produitSaveInLocalStorage.push(optionsProduit);
-                                localStorage.setItem("itemInOrder", JSON.stringify(produitSaveInLocalStorage));
-                            }
-                        })
+                        }
+                        location.reload();}
+                        
 
+                    })
+                        //suppression de l'item au clic
                         itemDeleteLink.addEventListener("click", (event)=>{
                             event.preventDefault();
                             let optionsProduit = {
@@ -84,7 +90,6 @@ if(localStorage.length === 0 ){
                             alert("Ce produit a bien été supprimé du panier");
                             location.reload();
                         })  
-                                    // voir gestion des qtt sup a 100 ou inf 0 ou = 0 à voir sur clock boutton commander
                             
                 }))
 
@@ -106,6 +111,68 @@ for (let product of parsedItemInOrder) {
 } 
     totalPriceItem.innerHTML = totalPriceOrder
 
-    
+                         // voir gestion des qtt sup a 100 ou inf 0 ou = 0 à voir sur clock boutton commander
+   
+// verification du formulaire contact
 
+// creation des regex
+let textRegExp = new RegExp("^[a-zA-Z-àâäéèêëïîôöùûüç ,.'-]+$");
+let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+let emailReg = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9._-]+[.]{1}[a-z]{2,10}$');
 
+// creation des cosntantes pour les inputs à ecouter
+const prenom = document.querySelector("#firstName");
+const nom = document.querySelector("#lastName");
+const adresse = document.querySelector("#address");
+const ville = document.querySelector("#city");
+const email = document.querySelector("#email");
+
+// verification Prénom
+prenom.addEventListener("change", (event)=>{
+    if(textRegExp.test(firstName.value)){
+        firstNameErrorMsg.innerHTML="";
+    }
+    else {
+        firstNameErrorMsg.innerHTML="Merci de renseigner votre prénom";
+    }
+})
+// verification Nom
+nom.addEventListener("change", (event)=>{
+    if(textRegExp.test(lastName.value)){
+        lastNameErrorMsg.innerHTML="";
+    }
+    else {
+        lastNameErrorMsg.innerHTML="Merci de renseigner votre nom";
+    }
+})
+// verification Adresse
+adresse.addEventListener("change", (event)=>{
+    if(addressRegExp.test(address.value)){
+        addressErrorMsg.innerHTML="";
+    }
+    else {
+        addressErrorMsg.innerHTML="Merci de renseigner votre adresse";
+    }
+})
+// verification Ville
+ville.addEventListener("change", (event)=>{
+    if(addressRegExp.test(city.value)){
+        cityErrorMsg.innerHTML="";
+    }
+    else {
+        cityErrorMsg.innerHTML="Merci de renseigner votre ville";
+    }
+})
+// verification Email
+email.addEventListener("change", (event)=>{
+    if(emailReg.test(lastName.value)){
+        emailErrorMsg.innerHTML="";
+    }
+    else {
+        emailErrorMsg.innerHTML="Merci de renseigner votre nom";
+    }
+})
+
+// actions au click du bouton commande
+// 1 verifier les input remplis
+// 2 verifier les valeurs des inputs corrects

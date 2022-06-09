@@ -1,11 +1,11 @@
 
-//recuperer l'Id de l'URL
-function getProductId() {
+
+function getProductId() {  //recuperer l'Id de l'URL
     return new URL(location.href).searchParams.get("id")   
 }
 
-//fonction de récupération des données liées à Id produit
-function displayDetailProduct(produit) {
+
+function displayDetailProduct(produit) {  //fonction de récupération des données liées à Id produit
     const img = document.createElement("img");
         img.src =produit.imageUrl;
         document.getElementsByClassName("item__img")[0].appendChild(img)
@@ -20,7 +20,7 @@ function displayDetailProduct(produit) {
         });
 }
 //fonction au clic sur Ajouter panier
-function handleaddtocart(){
+function handleaddtocart(){ //fonction au clic sur Ajouter panier
     const addButton = document.querySelector("#addToCart");
 
     addButton.addEventListener("click", () => {
@@ -74,7 +74,6 @@ fetch(`http://localhost:3000/api/products/${getProductId()}`)
         displayDetailProduct(produit);
         handleaddtocart();
     })
-    .catch(function(err) {
+    .catch(function(err) {  // Une erreur est survenue
         window.location.href = "./index.html"
-        // Une erreur est survenue
     }))
