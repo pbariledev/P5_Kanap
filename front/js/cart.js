@@ -53,7 +53,7 @@ if(localStorage.length === 0 ){ // si le panier est vide : afficher le panier es
                     const itemDeleteLink = document.querySelector(`.cart__item[data-id="${product.id}"][data-color="${product.color}"] .deleteItem`);
                     //modification des quantités au clic
                     itemQuantityInput.addEventListener("change", (event)=>{
-                        event.preventDefault();
+                        
                         const newQuantity = event.currentTarget.value;
                         let optionsProduit = {
                             id : product.id,
@@ -62,7 +62,9 @@ if(localStorage.length === 0 ){ // si le panier est vide : afficher le panier es
                         }
                         if(newQuantity>100){
                             alert("veuillez saisir une couleur et une quantité entre 1 et 100 pour ajouter au panier");
-                        }else{let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
+                            event.preventDefault();
+                        }
+                        else{let produitSaveInLocalStorage = JSON.parse(localStorage.getItem("itemInOrder"));
                         const doublon = produitSaveInLocalStorage.find ((element) => element.id == optionsProduit.id && element.color == optionsProduit.color)
                         if (doublon){ 
                             doublon.quantity = newQuantity;
@@ -118,6 +120,7 @@ for (let product of parsedItemInOrder) {
 // creation des regex
 let textRegExp = new RegExp("^[a-zA-Z-àâäéèêëïîôöùûüç ,.'-]+$");
 let addressRegExp = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+let cityRegExp = new RegExp("^[0-9]{1,5}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
 let emailReg = new RegExp('^[a-zA-Z0-9._-]+[@]{1}[a-zA-Z0-9._-]+[.]{1}[a-z]{2,10}$');
 
 // creation des cosntantes pour les inputs à ecouter
@@ -125,7 +128,7 @@ const prenom = document.querySelector("#firstName");
 const nom = document.querySelector("#lastName");
 const adresse = document.querySelector("#address");
 const ville = document.querySelector("#city");
-const email = document.querySelector("#email");
+const eMail = document.querySelector("#email");
 
 // verification Prénom
 prenom.addEventListener("change", (event)=>{
@@ -156,7 +159,7 @@ adresse.addEventListener("change", (event)=>{
 })
 // verification Ville
 ville.addEventListener("change", (event)=>{
-    if(addressRegExp.test(city.value)){
+    if(cityRegExp.test(city.value)){
         cityErrorMsg.innerHTML="";
     }
     else {
@@ -164,15 +167,48 @@ ville.addEventListener("change", (event)=>{
     }
 })
 // verification Email
-email.addEventListener("change", (event)=>{
-    if(emailReg.test(lastName.value)){
+eMail.addEventListener("change", (event)=>{
+    if(emailReg.test(email.value)){
         emailErrorMsg.innerHTML="";
     }
     else {
-        emailErrorMsg.innerHTML="Merci de renseigner votre nom";
+        emailErrorMsg.innerHTML="Merci de renseigner votre Mail";
     }
 })
 
 // actions au click du bouton commande
-// 1 verifier les input remplis
-// 2 verifier les valeurs des inputs corrects
+const btnCommand = document.getElementById("order");
+    // recupération des inputs
+    let inputFirstName = document.getElementById('firstName');
+    let inputLastName = document.getElementById('lastName');
+    let inputAddress = document.getElementById('address');
+    let inputCity = document.getElementById('city');
+    let inputEmail = document.getElementById('email');
+    // au click commande
+    btnCommand.addEventListener("click" ,(event)=>{
+        // verifier les input remplis
+        if (
+            !inputFirstName.value ||
+            !inputLastName.value ||
+            !inputAddress.value || 
+            !inputCity.value ||
+            !inputEmail.value
+        ){
+            alert("merci de renseigner tous les champs")
+            event.preventDefault();
+        }
+        // verifier les valeurs des inputs corrects
+        else if (
+
+            !textRegExp.test(firstName.value) ||
+            !textRegExp.test(lastName.value) ||
+            !cityRegExp.test(city.value) ||
+            !addressRegExp.test(address.value) ||
+            !emailReg.test(email.value)
+        ) {
+            alert('Merci de renseigner correctement tous les champs')
+        }
+
+        else {}
+    })
+
