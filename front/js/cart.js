@@ -186,7 +186,7 @@ const btnCommand = document.getElementById("order");
     let inputEmail = document.getElementById('email');
     // au click commande
     btnCommand.addEventListener("click" ,(event)=>{
-        // verifier les input remplis
+        // verifier SI les input remplis
         if (
             !inputFirstName.value ||
             !inputLastName.value ||
@@ -197,18 +197,32 @@ const btnCommand = document.getElementById("order");
             alert("merci de renseigner tous les champs")
             event.preventDefault();
         }
-        // verifier les valeurs des inputs corrects
+        // SINON verifier SI les valeurs des inputs corrects
         else if (
 
             !textRegExp.test(firstName.value) ||
             !textRegExp.test(lastName.value) ||
-            !cityRegExp.test(city.value) ||
             !addressRegExp.test(address.value) ||
+            !cityRegExp.test(city.value) ||
             !emailReg.test(email.value)
         ) {
             alert('Merci de renseigner correctement tous les champs')
         }
+        //SINON stocker les inputs dans le localStorage
+        else {
+            let contactSaveInLocalStorage = JSON.parse(localStorage.getItem("OrderContact"));
 
-        else {}
+            let contact = {
+                prenom : firstName.value,
+                nom : lastName.value,
+                adresse : address.value,
+                ville :city.value,
+                eMail :email.value,
+            }
+            contactSaveInLocalStorage = [];
+            contactSaveInLocalStorage.push(contact);
+            localStorage.setItem("OrderContact", JSON.stringify(contactSaveInLocalStorage));
+
+        }
     })
 
