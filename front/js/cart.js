@@ -82,7 +82,7 @@ if(localStorage.length === 0 ){ // si le panier est vide : afficher le panier es
                             color : product.color,
                         }
                         if(newQuantity>100){
-                            alert("veuillez saisir une couleur et une quantité entre 1 et 100 pour ajouter au panier");
+                            alert("veuillez saisir une quantité entre 1 et 100 pour ajouter au panier");
                             event.preventDefault();
                         }
                         else{
@@ -254,13 +254,14 @@ const btnCommand = document.getElementById("order");
 
             let dataPush = {
                 method :'POST',
+                mode: "cors",
                 body : JSON.stringify(validation),
                 headers: {
                     "Content-Type": "application/json",
                 }
                 
             }
-            fetch('http://localhost:3000/api/products/order', dataPush)
+            fetch('http://127.0.0.1:3000/api/products/order', dataPush)
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);

@@ -24,12 +24,13 @@ function handleaddtocart(){ //fonction au clic sur Ajouter panier
     const addButton = document.querySelector("#addToCart");
 
     addButton.addEventListener("click", () => {
-        const quantity = document.querySelector("#quantity");
+        const quantity =  document.querySelector("#quantity");
         const color = document.querySelector("#colors");
+        
 
         const nocolor = color.value =="";
         const noquantity = quantity.value == 0;
-        const errorquantity = quantity.value <0 && quantity.value > 100;
+        const errorquantity = quantity.value <0 || quantity.value > 100;
         //si pas de color ou quantité nul ou mauvaise alert sinon localstorage
         if (nocolor || noquantity || errorquantity){
             alert("veuillez saisir une couleur et une quantité entre 1 et 100 pour ajouter au panier");

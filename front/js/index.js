@@ -7,7 +7,7 @@
             --> pour chaque element de la list l'afficher sur la page
  )*/
 
-//1. appler l'API
+//1. appeler l'API
 fetch("http://localhost:3000/api/products")
 .then(function(res){ // voir ce qu'il affiche sur la consol (response)
     console.log(res)
@@ -16,8 +16,7 @@ if (res.ok) {
 }
     })
 
-.then(function(products){// voir nos produits sur la consol (8)
-    console.log(products)
+.then(function(products){// voir nos produits sur la consol
 products.forEach(product => { //boucle pour chaques produits trouvés
     //afficher le detail du produit dans le DOM
         //1 creer l'element HTML
