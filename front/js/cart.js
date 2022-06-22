@@ -2,7 +2,7 @@ const localStorageName = "itemInOrder";
 
 //fonction pour la mise à jour dynaique du total quantité-prix
 function modifyTotal (cart){
-    //TOTAL ARTICLE
+    //TOTAL ARTICLES
     const totalQteItem = document.querySelector ("#totalQuantity")
     let totalQte = 0;
     for (let product of cart) {
